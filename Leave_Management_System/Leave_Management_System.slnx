@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="Leave_Management_System.API/Leave_Management_System.API.csproj" />
+  <Project Path="Leave_Management_System.Data/Leave_Management_System.Data.csproj" />
+  <Project Path="Leave_Management_System.Models/Leave_Management_System.Models.csproj" />
+  <Project Path="Leave_Management_System.Repository/Leave_Management_System.Repository.csproj" />
+  <Project Path="Leave_Management_System.Service/Leave_Management_System.Service.csproj" />
+</Solution>
