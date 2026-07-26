@@ -22,6 +22,12 @@ namespace Leave_Management_System.Data.DbContexts
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<Employee>()
+                .HasOne(e => e.Manager)
+                .WithMany(e => e.Employees)
+                .HasForeignKey(e => e.ManagerId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Employee>()
                 .Property(e => e.Salary)
                 .HasPrecision(18, 2);
 

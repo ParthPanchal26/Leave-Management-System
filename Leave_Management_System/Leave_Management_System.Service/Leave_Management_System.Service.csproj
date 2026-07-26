@@ -7,7 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNet.Identity.Core" Version="2.2.4" />
+    <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="10.0.10" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Leave_Management_System.Models\Leave_Management_System.Models.csproj" />
+    <ProjectReference Include="..\Leave_Management_System.Repository\Leave_Management_System.Repository.csproj" />
   </ItemGroup>
 
 </Project>

@@ -24,12 +24,12 @@ namespace Leave_Management_System.Models.Domain
         public Employee? Manager { get; set; }
 
         public ICollection<Employee> Employees { get; set; } = new List<Employee>();
-        public ICollection<LeaveRequest> LeaveRequests { get; set; }
+        public ICollection<LeaveRequest> LeaveRequests { get; set; } = new List<LeaveRequest>();
 
-        public int RoleId { get; set; }
+        public int? RoleId { get; set; }
         public Role Role { get; set; } = null!;
 
-        public int DepartmentId { get; set; }
+        public int? DepartmentId { get; set; }
         public Department Department { get; set; } = null!;
 
     }

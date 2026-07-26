@@ -1,10 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
+﻿using Leave_Management_System.Models.Domain;
 
 namespace Leave_Management_System.Models.DTO
 {
+    public class Manager
+    {
+        public string? ManagerName { get; set; } = string.Empty;
+        public Guid? ManagerId { get; set; } = Guid.Empty;
+        public string? Department { get; set; } = string.Empty;
+        public string? Role { get; set; } = string.Empty;
+        public string? PhoneNumber { get; set; } = string.Empty;
+    }
+
     public class EmployeeResponseDTO
     {
         public Guid EmployeeId { get; set; }
@@ -23,11 +29,10 @@ namespace Leave_Management_System.Models.DTO
 
         public decimal Salary { get; set; } = decimal.Zero;
 
-        public Guid? ManagerId { get; set; }
+        public Manager Manager { get; set; }
+        public Role Role { get; set; }
 
-        public int RoleId { get; set; }
-
-        public int DepartmentId { get; set; }
+        public Department Department { get; set; }
 
         public DateTime CreatedAt { get; set; }
 

@@ -7,7 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Employees\IRepository\" />
+    <Compile Remove="Employees\IRepository\**" />
+    <EmbeddedResource Remove="Employees\IRepository\**" />
+    <None Remove="Employees\IRepository\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Leave_Management_System.Data\Leave_Management_System.Data.csproj" />
+    <ProjectReference Include="..\Leave_Management_System.Models\Leave_Management_System.Models.csproj" />
   </ItemGroup>
 
 </Project>

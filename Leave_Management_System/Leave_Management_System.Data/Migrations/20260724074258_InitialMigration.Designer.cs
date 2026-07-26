@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Leave_Management_System.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContextEFCore))]
-    [Migration("20260723084046_InitialMigration")]
+    [Migration("20260724074258_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -537,7 +537,8 @@ namespace Leave_Management_System.Data.Migrations
 
                     b.HasOne("Leave_Management_System.Models.Domain.Employee", "Manager")
                         .WithMany("Employees")
-                        .HasForeignKey("ManagerId");
+                        .HasForeignKey("ManagerId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Leave_Management_System.Models.Domain.Role", "Role")
                         .WithMany()

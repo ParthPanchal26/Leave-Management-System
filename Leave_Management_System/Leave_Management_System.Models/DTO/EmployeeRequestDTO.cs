@@ -23,7 +23,7 @@ namespace Leave_Management_System.Models.DTO
         public DateOnly HireDate { get; set; }
 
         [Required(ErrorMessage = "Employee salary is required")]
-        public decimal Salary { get; set; } = decimal.Zero;
+        public decimal Salary { get; set; }
 
         [Required(ErrorMessage = "Employee password is required")]
         public string Password { get; set; }

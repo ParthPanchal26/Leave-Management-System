@@ -104,7 +104,8 @@ namespace Leave_Management_System.Data.Migrations
                         name: "FK_Employees_Employees_ManagerId",
                         column: x => x.ManagerId,
                         principalTable: "Employees",
-                        principalColumn: "EmployeeId");
+                        principalColumn: "EmployeeId",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Employees_Roles_RoleId",
                         column: x => x.RoleId,
