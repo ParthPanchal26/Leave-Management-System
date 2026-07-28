@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Leave_Management_System.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContextEFCore))]
-    [Migration("20260724074258_InitialMigration")]
+    [Migration("20260727104938_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -108,7 +108,7 @@ namespace Leave_Management_System.Data.Migrations
                     b.Property<DateOnly>("DateOfBirth")
                         .HasColumnType("date");
 
-                    b.Property<int>("DepartmentId")
+                    b.Property<int?>("DepartmentId")
                         .HasColumnType("int");
 
                     b.Property<string>("Email")
@@ -140,7 +140,7 @@ namespace Leave_Management_System.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("RoleId")
+                    b.Property<int?>("RoleId")
                         .HasColumnType("int");
 
                     b.Property<decimal>("Salary")
@@ -531,9 +531,7 @@ namespace Leave_Management_System.Data.Migrations
                 {
                     b.HasOne("Leave_Management_System.Models.Domain.Department", "Department")
                         .WithMany()
-                        .HasForeignKey("DepartmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("DepartmentId");
 
                     b.HasOne("Leave_Management_System.Models.Domain.Employee", "Manager")
                         .WithMany("Employees")
@@ -542,9 +540,7 @@ namespace Leave_Management_System.Data.Migrations
 
                     b.HasOne("Leave_Management_System.Models.Domain.Role", "Role")
                         .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("RoleId");
 
                     b.Navigation("Department");
 

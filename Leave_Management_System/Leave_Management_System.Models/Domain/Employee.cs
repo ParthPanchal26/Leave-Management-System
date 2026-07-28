@@ -27,10 +27,10 @@ namespace Leave_Management_System.Models.Domain
         public ICollection<LeaveRequest> LeaveRequests { get; set; } = new List<LeaveRequest>();
 
         public int? RoleId { get; set; }
-        public Role Role { get; set; } = null!;
+        public Role? Role { get; set; } = null!;
 
         public int? DepartmentId { get; set; }
-        public Department Department { get; set; } = null!;
+        public Department? Department { get; set; } = null!;
 
     }
 }

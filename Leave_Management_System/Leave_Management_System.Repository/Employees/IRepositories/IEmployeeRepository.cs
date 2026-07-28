@@ -1,7 +1,4 @@
 ﻿using Leave_Management_System.Models.Domain;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Leave_Management_System.Repository.Employees.IRepositories
 {
@@ -9,5 +6,9 @@ namespace Leave_Management_System.Repository.Employees.IRepositories
     {
         Task<IEnumerable<Employee>> GetEmployeesAsync();
         Task<Employee?> CreateEmployeeModelAsync(Employee employee);
+        Task<Employee?> GetEmployeeByEmailAsync(string email);
+        Task<Employee?> GetEmployeeByIdAsync(Guid id);
+        Task<Employee> UpdateEmployeeModelAsync(Employee employee);
+        Task DeleteEmployeeAsync(Employee employee);
     }
 }

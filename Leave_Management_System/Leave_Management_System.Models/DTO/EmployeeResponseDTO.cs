@@ -11,6 +11,21 @@ namespace Leave_Management_System.Models.DTO
         public string? PhoneNumber { get; set; } = string.Empty;
     }
 
+    public class EmployeeRole
+    {
+        public int? RoleId { get; set; }
+        public string? RoleName { get; set; }
+    }
+
+    public class EmployeeDepartment
+    {
+        public int? DepartmentId { get; set; }
+
+        public string? DepartmentName { get; set; } = string.Empty;
+
+        public string? Description { get; set; } = string.Empty;
+    }
+
     public class EmployeeResponseDTO
     {
         public Guid EmployeeId { get; set; }
@@ -29,10 +44,10 @@ namespace Leave_Management_System.Models.DTO
 
         public decimal Salary { get; set; } = decimal.Zero;
 
-        public Manager Manager { get; set; }
-        public Role Role { get; set; }
+        public Manager? Manager { get; set; }
+        public EmployeeRole? Role { get; set; }
 
-        public Department Department { get; set; }
+        public EmployeeDepartment? Department { get; set; }
 
         public DateTime CreatedAt { get; set; }
 

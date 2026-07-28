@@ -17,7 +17,7 @@ namespace Leave_Management_System.Repository.Employees.Repositories
 
         public async Task<IEnumerable<Employee>> GetEmployeesAsync()
         {
-            return await _applicationDbContextEFCore.Employees.Include(e => e.Manager).Include(e => e.Employees).Include(e => e.Role).Include(e => e.Department).ToListAsync();
+            return await _applicationDbContextEFCore.Employees.Include(e => e.Manager).Include(e => e.Employees).Include(e => e.Role).Include(e => e.Department).Where(e => e.IsActive == true).ToListAsync();
         }
 
         public async Task<Employee?> CreateEmployeeModelAsync(Employee employee)
@@ -27,6 +27,32 @@ namespace Leave_Management_System.Repository.Employees.Repositories
 
             var employeeResponse = await _applicationDbContextEFCore.Employees.Include(e => e.Manager).Include(e => e.Employees).Include(e => e.Role).Include(e => e.Department).FirstOrDefaultAsync(e => e.Email == employee.Email);
             return employeeResponse;
+        }
+
+        public async Task<Employee?> GetEmployeeByEmailAsync(string email)
+        {
+            var employee = await _applicationDbContextEFCore.Employees.Include(e => e.Manager).Include(e => e.Employees).Include(e => e.Role).Include(e => e.Department).FirstOrDefaultAsync(e => e.Email.ToLower() == email.ToLower());
+            return employee;
+        }
+
+        public async Task<Employee?> GetEmployeeByIdAsync(Guid id)
+        {
+            var employee = await _applicationDbContextEFCore.Employees.Include(e => e.Manager).Include(e => e.Employees).Include(e => e.Role).Include(e => e.Department).FirstOrDefaultAsync(e => e.EmployeeId == id);
+            return employee;
+        }
+
+        public async Task<Employee> UpdateEmployeeModelAsync(Employee employee)
+        {
+            _applicationDbContextEFCore.Employees.Update(employee);
+            await _applicationDbContextEFCore.SaveChangesAsync();
+
+            return await GetEmployeeByEmailAsync(employee.Email);
+        }
+
+        public async Task DeleteEmployeeAsync(Employee employee)
+        {
+            _applicationDbContextEFCore.Employees.Update(employee);
+            await _applicationDbContextEFCore.SaveChangesAsync();
         }
     }
 }

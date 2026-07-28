@@ -2,8 +2,9 @@
 
 namespace Leave_Management_System.Models.DTO
 {
-    public class EmployeeRequestDTO
+    public class EmployeeUpdateDTO
     {
+
         [Required(ErrorMessage = "Employee firstname is required")]
         public string FirstName { get; set; } = string.Empty;
 
@@ -19,22 +20,15 @@ namespace Leave_Management_System.Models.DTO
         [Required(ErrorMessage = "Employee DOB is required")]
         public DateOnly DateOfBirth { get; set; }
 
-        [Required(ErrorMessage = "Employee hire date is required")]
-        public DateOnly HireDate { get; set; }
 
         [Required(ErrorMessage = "Employee salary is required")]
         public decimal Salary { get; set; }
 
-        [Required(ErrorMessage = "Employee password is required")]
-        [MinLength(8)]
-        public string Password { get; set; }
+        public Guid? ManagerId { get; set; }
 
-        //public Guid? ManagerId { get; set; }
+        public int? RoleId { get; set; } = 4;
 
-        //[Required(ErrorMessage = "Employee role is required")]
-        //public int? RoleId { get; set; } = 4;
+        public int? DepartmentId { get; set; }
 
-        //[Required(ErrorMessage = "Employee department is required")]
-        //public int? DepartmentId { get; set; }
     }
 }
