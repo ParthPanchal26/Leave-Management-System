@@ -16,8 +16,8 @@ namespace Leave_Management_System.Models.Domain
         public decimal Salary { get; set; } = decimal.Zero;
         public required string PasswordHash { get; set; }
         public bool IsActive { get; set; } = true;
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-        public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
+        public DateTime UpdatedAt { get; set; } = DateTime.Now;
 
         public Guid? ManagerId { get; set; }
         [ForeignKey(nameof(ManagerId))]

@@ -39,7 +39,7 @@ namespace Leave_Management_System.Data.DbContexts
 
 
             modelBuilder.Entity<LeaveRequest>()
-                .HasOne(l => l.Approval)
+                .HasOne(l => l.Approver)
                 .WithMany()
                 .HasForeignKey(l => l.ApprovedBy)
                 .OnDelete(DeleteBehavior.Restrict);

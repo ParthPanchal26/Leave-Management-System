@@ -4,4 +4,5 @@
   <Project Path="Leave_Management_System.Models/Leave_Management_System.Models.csproj" />
   <Project Path="Leave_Management_System.Repository/Leave_Management_System.Repository.csproj" />
   <Project Path="Leave_Management_System.Service/Leave_Management_System.Service.csproj" />
+  <Project Path="Leave_Management_System.Utility/Leave_Management_System.Utility.csproj" Id="1ea7105c-ac9b-4bd5-a807-77147bd7c592" />
 </Solution>

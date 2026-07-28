@@ -4,11 +4,11 @@ namespace Leave_Management_System.Models.DTO
 {
     public class Manager
     {
-        public string? ManagerName { get; set; } = string.Empty;
-        public Guid? ManagerId { get; set; } = Guid.Empty;
-        public string? Department { get; set; } = string.Empty;
-        public string? Role { get; set; } = string.Empty;
-        public string? PhoneNumber { get; set; } = string.Empty;
+        public string? ManagerName { get; set; }
+        public Guid? ManagerId { get; set; }
+        public string? Department { get; set; }
+        public string? Role { get; set; }
+        public string? PhoneNumber { get; set; }
     }
 
     public class EmployeeRole

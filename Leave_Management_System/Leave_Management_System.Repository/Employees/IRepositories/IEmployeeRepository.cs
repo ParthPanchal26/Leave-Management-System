@@ -10,5 +10,8 @@ namespace Leave_Management_System.Repository.Employees.IRepositories
         Task<Employee?> GetEmployeeByIdAsync(Guid id);
         Task<Employee> UpdateEmployeeModelAsync(Employee employee);
         Task DeleteEmployeeAsync(Employee employee);
+        Task<LeaveRequest> CreateLeaveRequest(LeaveRequest leaveRequest);
+        Task<LeaveRequest?> CheckExistingLeave(Guid id, DateTime startDate, DateTime endDate);
+        Task<Holidays?> CheckHolidayInDates(DateTime startDate, DateTime endDate);
     }
 }

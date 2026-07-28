@@ -1,3 +1,4 @@
+using Leave_Management_System.API.ExceptionHandler;
 using Leave_Management_System.Data.DbContexts;
 using Leave_Management_System.Repository.Employees.IRepositories;
 using Leave_Management_System.Repository.Employees.Repositories;
@@ -59,6 +60,8 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
     app.MapScalarApiReference();
 }
+
+app.UseMiddleware<ExceptionMiddleware>();
 
 app.UseHttpsRedirection();
 
