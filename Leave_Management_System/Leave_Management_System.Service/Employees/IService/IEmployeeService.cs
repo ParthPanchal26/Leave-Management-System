@@ -13,6 +13,5 @@ namespace Leave_Management_System.Service.Employees.IService
         Task<ServiceResult<LoginResponseDTO>> LoginUser(LoginRequestDTO model);
         Task<ServiceResult<EmployeeResponseDTO>> UpdateEmployeeAsync(Guid id, EmployeeUpdateDTO model);
         Task<ServiceResult<bool?>> DeleteEmployeeByIdAsync(Guid id);
-        Task<ServiceResult<EmployeeLeaveResponseDTO>> CreateLeaveRequestAsync(EmployeeLeaveRequestDTO model);
     }
 }

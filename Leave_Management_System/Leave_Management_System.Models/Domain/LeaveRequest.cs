@@ -1,4 +1,5 @@
-﻿using Leave_Management_System.Utility;
+﻿using Leave_Management_System.Models.Enum;
+using Leave_Management_System.Utility;
 using System.ComponentModel.DataAnnotations;
 
 namespace Leave_Management_System.Models.Domain
@@ -18,10 +19,17 @@ namespace Leave_Management_System.Models.Domain
         public required DateTime EndDate { get; set; }
         public required string LeaveReason { get; set; } = string.Empty;
 
-        public required string LeaveStatus { get; set; } = LeaveStatusValues.LeavePending;
+        //public enum LeaveStatuses
+        //{
+        //    APPROVED,
+        //    REJECTED,
+        //    PENDING
+        //}
 
-        public Guid? ApprovedBy { get; set; }
-        public Employee? Approver { get; set; }
+        public required LeaveStatus LeaveStatus { get; set; } = LeaveStatus.PENDING;
+
+        public Guid? ReviewedBy { get; set; }
+        public Employee? Reviewer { get; set; }
 
         public DateTime? ApproveDate { get; set; }
         public string? RejectReason { get; set; }

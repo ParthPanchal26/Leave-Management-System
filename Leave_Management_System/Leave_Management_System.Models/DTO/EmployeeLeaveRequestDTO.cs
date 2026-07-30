@@ -1,5 +1,4 @@
-﻿using Leave_Management_System.Models.Domain;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Leave_Management_System.Models.DTO
 {
@@ -12,9 +11,11 @@ namespace Leave_Management_System.Models.DTO
         public int LeaveTypeId { get; set; }
 
         [Required(ErrorMessage = "Please enter leave start date")]
+        [DataType(DataType.Date)]
         public required DateTime StartDate { get; set; }
 
         [Required(ErrorMessage = "Please enter leave end date")]
+        [DataType(DataType.Date)]
         public required DateTime EndDate { get; set; }
 
         [Required(ErrorMessage = "Please enter leave reason")]

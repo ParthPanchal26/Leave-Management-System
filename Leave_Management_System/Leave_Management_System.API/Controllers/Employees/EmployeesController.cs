@@ -31,20 +31,13 @@ namespace Leave_Management_System.API.Controllers.Employees
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<ServiceResult<IEnumerable<EmployeeResponseDTO>>>> GetAllEmployees()
         {
-            //try
-            //{
+
             var result = await _employeeService.GetEmployeeResponseDTOsAsync();
 
-            if (result.Success) _logger.LogInformation($"Employees fetched: ${JsonSerializer.Serialize(result)}");
+            if (result.Success) _logger.LogInformation($"Employees fetched: ${JsonSerializer.Serialize(result.Data)}");
 
             return StatusCode(result.Statuscode, result.Data);
 
-            //}
-            //catch (Exception ex)
-            //{
-            //    _logger.LogError($"Employees not found: ${ex.Message}");
-            //    return StatusCode(StatusCodes.Status500InternalServerError, "Failed to fetch employees");
-            //}
         }
 
         #endregion
@@ -60,8 +53,6 @@ namespace Leave_Management_System.API.Controllers.Employees
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<ServiceResult<EmployeeResponseDTO>>> CreateEmployee([FromBody] EmployeeRequestDTO model)
         {
-            //try
-            //{
 
             if (!ModelState.IsValid) BadRequest("Invalid inputs");
 
@@ -69,21 +60,15 @@ namespace Leave_Management_System.API.Controllers.Employees
 
             if (result.Success)
             {
-                _logger.LogInformation($"Employee Created: ${JsonSerializer.Serialize(result)}");
+                _logger.LogInformation($"Employee Created: ${JsonSerializer.Serialize(result.Data)}");
                 return StatusCode(result.Statuscode, result.Data);
             }
             else
             {
-                _logger.LogError($"Employee not Created and exists! Employee: ${JsonSerializer.Serialize(model)}");
+                _logger.LogError(result.ErrorMessage);
                 return StatusCode(result.Statuscode, result.ErrorMessage);
             }
 
-            //}
-            //catch (Exception ex)
-            //{
-            //    _logger.LogError($"Employees not Created: ${ex.Message}");
-            //    return StatusCode(StatusCodes.Status500InternalServerError, "Failed to create employee");
-            //}
         }
 
         // Login
@@ -94,8 +79,6 @@ namespace Leave_Management_System.API.Controllers.Employees
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<ServiceResult<LoginResponseDTO>>> LoginEmployee([FromBody] LoginRequestDTO model)
         {
-            //try
-            //{
 
             if (!ModelState.IsValid) BadRequest("Invalid inputs");
 
@@ -108,43 +91,10 @@ namespace Leave_Management_System.API.Controllers.Employees
             }
             else
             {
-                _logger.LogError($"Employee not found! Employee: ${JsonSerializer.Serialize(model)} ");
+                _logger.LogError(result.ErrorMessage);
                 return StatusCode(result.Statuscode, result.ErrorMessage);
             }
 
-            //}
-            //catch (Exception ex)
-            //{
-            //    _logger.LogError($"Employees not Sign-In: ${ex.Message}");
-            //    return StatusCode(StatusCodes.Status500InternalServerError, "Failed to login employee");
-            //}
-        }
-
-        // Employee Leave Request
-        [HttpPost("leave-request")]
-        public async Task<IActionResult> CreateLeaveRequest([FromBody] EmployeeLeaveRequestDTO model)
-        {
-            //try
-            //{
-            if (!ModelState.IsValid) BadRequest("Invalid input");
-
-            var result = await _employeeService.CreateLeaveRequestAsync(model);
-
-            if (result.Success)
-            {
-                return StatusCode(result.Statuscode, result.Data);
-            }
-            else
-            {
-                return StatusCode(result.Statuscode, result.ErrorMessage);
-            }
-
-            //}
-            //catch (Exception ex)
-            //{
-            //    _logger.LogError($"Failed Leave Request Error : ${ex.Message}");
-            //    return StatusCode(StatusCodes.Status500InternalServerError, "Failed to create leave request");
-            //}
         }
 
         #endregion
@@ -160,8 +110,7 @@ namespace Leave_Management_System.API.Controllers.Employees
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<EmployeeResponseDTO>> UpdateEmployee([FromRoute] Guid id, [FromBody] EmployeeUpdateDTO model)
         {
-            //try
-            //{
+
             if (id == Guid.Empty) BadRequest("Invalid inputs");
 
             if (!ModelState.IsValid) BadRequest("Invalid inputs");
@@ -170,27 +119,21 @@ namespace Leave_Management_System.API.Controllers.Employees
 
             if (result.Success)
             {
-                _logger.LogInformation($"Employee Updated! Employee: ${JsonSerializer.Serialize(result)}");
+                _logger.LogInformation($"Employee Updated! Employee: ${JsonSerializer.Serialize(result.Data)}");
                 return StatusCode(result.Statuscode, result.Data);
             }
             else
             {
-                _logger.LogError($"Employee not found! Employee: ${JsonSerializer.Serialize(model)}");
+                _logger.LogError($"{result.ErrorMessage}! Employee: ${JsonSerializer.Serialize(model)}");
                 return StatusCode(result.Statuscode, result.ErrorMessage);
             }
 
-            //}
-            //catch (Exception ex)
-            //{
-            //    _logger.LogError($"Employees not Updated: ${ex.Message}");
-            //    return StatusCode(StatusCodes.Status500InternalServerError, "Failed to update employees");
-            //}
         }
 
         #endregion
 
         #region DELETE
-        [Authorize(Roles = "HR,Admin")]
+        [Authorize(Roles = "HR,Admin,Manager")]
         [HttpDelete("{id:guid}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -200,8 +143,6 @@ namespace Leave_Management_System.API.Controllers.Employees
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> DeleteEmployee([FromRoute] Guid id)
         {
-            //try
-            //{
 
             if (id == Guid.Empty) BadRequest("Invalid inputs");
 
@@ -214,16 +155,10 @@ namespace Leave_Management_System.API.Controllers.Employees
             }
             else
             {
-                _logger.LogError($"Employee Not deleted and not exist! Employee id: ${id}");
+                _logger.LogError($"{result.ErrorMessage} Employee id: ${id}");
                 return StatusCode(result.Statuscode, result.ErrorMessage);
             }
 
-            //}
-            //catch (Exception ex)
-            //{
-            //    _logger.LogError($"Employees not Deleted: ${ex.Message}");
-            //    return StatusCode(StatusCodes.Status500InternalServerError, "Failed to delete employee");
-            //}
         }
 
         #endregion

@@ -1,13 +1,11 @@
-﻿using Leave_Management_System.Models.Domain;
-
-namespace Leave_Management_System.Models.DTO
+﻿namespace Leave_Management_System.Models.DTO
 {
-    public class Approver
+    public class Reviewer
     {
-        public Guid? ApproverId { get; set; }
-        public string? ApproverName { get; set; }
-        public string? ApproverEmail { get; set; }
-        public string? ApproverPhoneNumber { get; set; }
+        public Guid? ReviewerId { get; set; }
+        public string? ReviewerName { get; set; }
+        public string? ReviewerEmail { get; set; }
+        public string? ReviewerPhoneNumber { get; set; }
     }
 
     public class LeaveIssuer
@@ -41,8 +39,8 @@ namespace Leave_Management_System.Models.DTO
 
         public required string LeaveStatus { get; set; }
 
-        public Guid? ApprovedBy { get; set; }
-        public Approver? Approver { get; set; }
+        public Guid? ReviewedBy { get; set; }
+        public Reviewer? Reviewer { get; set; }
 
         public DateTime? ApproveDate { get; set; }
         public string? RejectReason { get; set; }

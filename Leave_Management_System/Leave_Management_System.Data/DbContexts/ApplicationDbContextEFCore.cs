@@ -1,17 +1,23 @@
 ﻿using Leave_Management_System.Models.Domain;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace Leave_Management_System.Data.DbContexts
 {
     public class ApplicationDbContextEFCore : DbContext
     {
-        public ApplicationDbContextEFCore(DbContextOptions<ApplicationDbContextEFCore> options) : base(options)
+
+        private readonly IConfiguration _configuration;
+
+        public ApplicationDbContextEFCore(DbContextOptions<ApplicationDbContextEFCore> options, IConfiguration configuration) : base(options)
         {
+            _configuration = configuration;
         }
 
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Department> Departments { get; set; }
-        public DbSet<LeaveBalance> LeaveBalances { get; set; }
+
+        //public DbSet<LeaveBalance> LeaveBalances { get; set; }
         public DbSet<LeaveRequest> LeaveRequests { get; set; }
         public DbSet<LeaveType> LeaveTypes { get; set; }
         public DbSet<Holidays> Holidays { get; set; }
@@ -39,9 +45,9 @@ namespace Leave_Management_System.Data.DbContexts
 
 
             modelBuilder.Entity<LeaveRequest>()
-                .HasOne(l => l.Approver)
+                .HasOne(l => l.Reviewer)
                 .WithMany()
-                .HasForeignKey(l => l.ApprovedBy)
+                .HasForeignKey(l => l.ReviewedBy)
                 .OnDelete(DeleteBehavior.Restrict);
 
             List<Department> departments = new List<Department>
@@ -300,6 +306,24 @@ namespace Leave_Management_System.Data.DbContexts
                 new Role { RoleId = 4, RoleName = "Employee" }
             };
 
+            var adminUser = new Employee
+            {
+                EmployeeId = new Guid("e0e5fff4-ecaa-4d8b-b369-0d879988344d"),
+                FirstName = "Parth",
+                LastName = "Panchal",
+                Email = "admin@lms.com",
+                PasswordHash = "AQAAAAIAAYagAAAAENb7C8bXILY0mqaTLTYbbbZhB3CFNMROTUHHzU4TM8ce3axFXU7IfsbCZEBqlpbAXQ==",
+                PhoneNumber = "0123456789",
+                HireDate = new DateOnly(2026, 7, 30),
+                Salary = 1200000m,
+                DateOfBirth = new DateOnly(2005, 2, 26),
+                IsActive = true,
+                CreatedAt = new DateTime(2026, 7, 30, 0, 0, 0, DateTimeKind.Utc),
+                UpdatedAt = new DateTime(2026, 7, 30, 0, 0, 0, DateTimeKind.Utc),
+                RoleId = 1
+            };
+
+            modelBuilder.Entity<Employee>().HasData(adminUser);
             modelBuilder.Entity<Department>().HasData(departments);
             modelBuilder.Entity<Holidays>().HasData(holidays);
             modelBuilder.Entity<LeaveType>().HasData(leaveTypes);

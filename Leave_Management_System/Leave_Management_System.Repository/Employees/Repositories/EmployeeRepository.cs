@@ -29,30 +29,6 @@ namespace Leave_Management_System.Repository.Employees.Repositories
             return employeeResponse;
         }
 
-        public async Task<LeaveRequest> CreateLeaveRequest(LeaveRequest leaveRequest)
-        {
-            var leaveReq = await _applicationDbContextEFCore.LeaveRequests.AddAsync(leaveRequest);
-            await _applicationDbContextEFCore.SaveChangesAsync();
-
-            var leave = await GetLeaveRequestById(leaveReq.Entity.LeaveId);
-            return leave;
-        }
-
-        public async Task<LeaveRequest?> GetLeaveRequestById(Guid id)
-        {
-            return await _applicationDbContextEFCore.LeaveRequests.Include("Employee").Include("Approver").Include("LeaveType").FirstOrDefaultAsync(e => e.LeaveId == id);
-        }
-
-        public async Task<LeaveRequest?> CheckExistingLeave(Guid id, DateTime startDate, DateTime endDate)
-        {
-            return await _applicationDbContextEFCore.LeaveRequests.Include("Employee").Include("Approver").Include("LeaveType").FirstOrDefaultAsync(e => e.EmployeeId == id && e.StartDate <= endDate && e.EndDate >= startDate);
-        }
-
-        public async Task<Holidays?> CheckHolidayInDates(DateTime startDate, DateTime endDate)
-        {
-            return await _applicationDbContextEFCore.Holidays.FirstOrDefaultAsync(e => e.HolidayDate >= startDate && e.HolidayDate <= endDate);
-        }
-
         public async Task<Employee?> GetEmployeeByEmailAsync(string email)
         {
             var employee = await _applicationDbContextEFCore.Employees.Include(e => e.Manager).Include(e => e.Employees).Include(e => e.Role).Include(e => e.Department).FirstOrDefaultAsync(e => e.Email.ToLower() == email.ToLower());

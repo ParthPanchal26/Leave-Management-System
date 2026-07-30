@@ -4,6 +4,7 @@ using Leave_Management_System.Data.DbContexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Leave_Management_System.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContextEFCore))]
-    partial class ApplicationDbContextEFCoreModelSnapshot : ModelSnapshot
+    [Migration("20260730101656_RemoveLeaveBalanceTable")]
+    partial class RemoveLeaveBalanceTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -156,24 +159,6 @@ namespace Leave_Management_System.Data.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("Employees");
-
-                    b.HasData(
-                        new
-                        {
-                            EmployeeId = new Guid("e0e5fff4-ecaa-4d8b-b369-0d879988344d"),
-                            CreatedAt = new DateTime(2026, 7, 30, 0, 0, 0, 0, DateTimeKind.Utc),
-                            DateOfBirth = new DateOnly(2005, 2, 26),
-                            Email = "admin@lms.com",
-                            FirstName = "Parth",
-                            HireDate = new DateOnly(2026, 7, 30),
-                            IsActive = true,
-                            LastName = "Panchal",
-                            PasswordHash = "AQAAAAIAAYagAAAAENb7C8bXILY0mqaTLTYbbbZhB3CFNMROTUHHzU4TM8ce3axFXU7IfsbCZEBqlpbAXQ==",
-                            PhoneNumber = "0123456789",
-                            RoleId = 1,
-                            Salary = 1200000m,
-                            UpdatedAt = new DateTime(2026, 7, 30, 0, 0, 0, 0, DateTimeKind.Utc)
-                        });
                 });
 
             modelBuilder.Entity("Leave_Management_System.Models.Domain.Holidays", b =>

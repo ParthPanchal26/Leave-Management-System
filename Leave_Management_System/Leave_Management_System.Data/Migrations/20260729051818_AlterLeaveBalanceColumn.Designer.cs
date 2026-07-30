@@ -4,6 +4,7 @@ using Leave_Management_System.Data.DbContexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Leave_Management_System.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContextEFCore))]
-    partial class ApplicationDbContextEFCoreModelSnapshot : ModelSnapshot
+    [Migration("20260729051818_AlterLeaveBalanceColumn")]
+    partial class AlterLeaveBalanceColumn
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -156,24 +159,6 @@ namespace Leave_Management_System.Data.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("Employees");
-
-                    b.HasData(
-                        new
-                        {
-                            EmployeeId = new Guid("e0e5fff4-ecaa-4d8b-b369-0d879988344d"),
-                            CreatedAt = new DateTime(2026, 7, 30, 0, 0, 0, 0, DateTimeKind.Utc),
-                            DateOfBirth = new DateOnly(2005, 2, 26),
-                            Email = "admin@lms.com",
-                            FirstName = "Parth",
-                            HireDate = new DateOnly(2026, 7, 30),
-                            IsActive = true,
-                            LastName = "Panchal",
-                            PasswordHash = "AQAAAAIAAYagAAAAENb7C8bXILY0mqaTLTYbbbZhB3CFNMROTUHHzU4TM8ce3axFXU7IfsbCZEBqlpbAXQ==",
-                            PhoneNumber = "0123456789",
-                            RoleId = 1,
-                            Salary = 1200000m,
-                            UpdatedAt = new DateTime(2026, 7, 30, 0, 0, 0, 0, DateTimeKind.Utc)
-                        });
                 });
 
             modelBuilder.Entity("Leave_Management_System.Models.Domain.Holidays", b =>
@@ -365,6 +350,38 @@ namespace Leave_Management_System.Data.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Leave_Management_System.Models.Domain.LeaveBalance", b =>
+                {
+                    b.Property<int>("LeaveBalanceId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("LeaveBalanceId"));
+
+                    b.Property<int>("AllocatedDays")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("EmployeeId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("LeaveTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("LeaveYear")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UsedDays")
+                        .HasColumnType("int");
+
+                    b.HasKey("LeaveBalanceId");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.HasIndex("LeaveTypeId");
+
+                    b.ToTable("LeaveBalances");
+                });
+
             modelBuilder.Entity("Leave_Management_System.Models.Domain.LeaveRequest", b =>
                 {
                     b.Property<Guid>("LeaveId")
@@ -373,6 +390,9 @@ namespace Leave_Management_System.Data.Migrations
 
                     b.Property<DateTime?>("ApproveDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("ApprovedBy")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -387,8 +407,9 @@ namespace Leave_Management_System.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("LeaveStatus")
-                        .HasColumnType("int");
+                    b.Property<string>("LeaveStatus")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("LeaveTypeId")
                         .HasColumnType("int");
@@ -396,19 +417,16 @@ namespace Leave_Management_System.Data.Migrations
                     b.Property<string>("RejectReason")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("ReviewedBy")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
 
                     b.HasKey("LeaveId");
 
+                    b.HasIndex("ApprovedBy");
+
                     b.HasIndex("EmployeeId");
 
                     b.HasIndex("LeaveTypeId");
-
-                    b.HasIndex("ReviewedBy");
 
                     b.ToTable("LeaveRequests");
                 });
@@ -527,8 +545,32 @@ namespace Leave_Management_System.Data.Migrations
                     b.Navigation("Role");
                 });
 
+            modelBuilder.Entity("Leave_Management_System.Models.Domain.LeaveBalance", b =>
+                {
+                    b.HasOne("Leave_Management_System.Models.Domain.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Leave_Management_System.Models.Domain.LeaveType", "LeaveType")
+                        .WithMany()
+                        .HasForeignKey("LeaveTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Employee");
+
+                    b.Navigation("LeaveType");
+                });
+
             modelBuilder.Entity("Leave_Management_System.Models.Domain.LeaveRequest", b =>
                 {
+                    b.HasOne("Leave_Management_System.Models.Domain.Employee", "Approver")
+                        .WithMany()
+                        .HasForeignKey("ApprovedBy")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("Leave_Management_System.Models.Domain.Employee", "Employee")
                         .WithMany("LeaveRequests")
                         .HasForeignKey("EmployeeId")
@@ -541,16 +583,11 @@ namespace Leave_Management_System.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Leave_Management_System.Models.Domain.Employee", "Reviewer")
-                        .WithMany()
-                        .HasForeignKey("ReviewedBy")
-                        .OnDelete(DeleteBehavior.Restrict);
+                    b.Navigation("Approver");
 
                     b.Navigation("Employee");
 
                     b.Navigation("LeaveType");
-
-                    b.Navigation("Reviewer");
                 });
 
             modelBuilder.Entity("Leave_Management_System.Models.Domain.Employee", b =>
