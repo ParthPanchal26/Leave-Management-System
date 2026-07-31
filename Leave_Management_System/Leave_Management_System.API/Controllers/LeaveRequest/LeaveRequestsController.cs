@@ -20,11 +20,31 @@ namespace Leave_Management_System.API.Controllers.LeaveRequest
             _logger = logger;
         }
 
+        #region GET
+        [HttpGet("all")]
+        [Authorize(Roles = "HR,Manager,Admin")]
+        public async Task<IActionResult> GetAllLeaveRequests()
+        {
+            var result = await _leaveRequestService.GetAllLeaveRequestsService();
+
+            if (result.Success)
+            {
+                return StatusCode(result.Statuscode, result.Data);
+            }
+            else
+            {
+                _logger.LogError(result.ErrorMessage);
+                return StatusCode(result.Statuscode, result.ErrorMessage);
+            }
+        }
+
+        #endregion
+
         #region POST
 
         // Employee Leave Request
         [HttpPost("leave-request")]
-        [Authorize(Roles = "HR,Employee,Manager")]
+        [Authorize(Roles = "HR,Employee,Manager,Admin")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -50,7 +70,7 @@ namespace Leave_Management_System.API.Controllers.LeaveRequest
         #region PUT
         // Employee Leave Request
         [HttpPut("{leaveId:guid}")]
-        [Authorize(Roles = "Manager")]
+        [Authorize(Roles = "Manager,Admin")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

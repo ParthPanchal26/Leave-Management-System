@@ -14,5 +14,8 @@ namespace Leave_Management_System.Repository.Employees.IRepositories
         Task<IEnumerable<LeaveRequest>> GetLeavesByEmployeeIdLeaveTypeId(Guid employeeId, int leaveTypeId);
         //Task<LeaveBalance?> GetLeaveBalance(Guid employeeId, int leaveTypeId);
         //Task CreateLeaveBalance(LeaveBalance leaveBalance);
+
+        Task<IEnumerable<LeaveRequest>> GetRejectableLeaveRequests();
+        Task<IEnumerable<LeaveRequest>> GetLeaveRequests();
     }
 }

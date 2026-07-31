@@ -5,7 +5,8 @@
     {
         APPROVED = 0,
         PENDING = 1,
-        REJECTED = 2
+        REJECTED = 2,
+        CANCELLED = 3
     }
 
 }

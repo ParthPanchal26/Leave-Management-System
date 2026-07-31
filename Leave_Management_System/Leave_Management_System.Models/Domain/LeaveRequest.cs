@@ -1,5 +1,4 @@
 ﻿using Leave_Management_System.Models.Enum;
-using Leave_Management_System.Utility;
 using System.ComponentModel.DataAnnotations;
 
 namespace Leave_Management_System.Models.Domain

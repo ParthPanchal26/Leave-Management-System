@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace Leave_Management_System.Models.Domain
 {
@@ -24,6 +25,7 @@ namespace Leave_Management_System.Models.Domain
         public Employee? Manager { get; set; }
 
         public ICollection<Employee> Employees { get; set; } = new List<Employee>();
+        [JsonIgnore]
         public ICollection<LeaveRequest> LeaveRequests { get; set; } = new List<LeaveRequest>();
 
         public int? RoleId { get; set; }

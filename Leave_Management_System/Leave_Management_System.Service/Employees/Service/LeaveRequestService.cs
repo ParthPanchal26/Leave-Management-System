@@ -18,6 +18,36 @@ namespace Leave_Management_System.Service.Employees.Service
             _leaveRequestRepository = leaveRequestRepository;
         }
 
+
+        #region GET
+
+        public async Task<ServiceResult<IEnumerable<LeaveRequest>>> GetAllLeaveRequestsService()
+        {
+            var leaveRequests = await _leaveRequestRepository.GetLeaveRequests();
+
+            if (leaveRequests == null)
+            {
+                return new ServiceResult<IEnumerable<LeaveRequest>>
+                {
+                    Success = false,
+                    Statuscode = 404,
+                    ErrorMessage = "Leaves not found",
+                    Data = null
+                };
+            }
+
+            return new ServiceResult<IEnumerable<LeaveRequest>>
+            {
+                Success = true,
+                Statuscode = 200,
+                ErrorMessage = null,
+                Data = leaveRequests
+            };
+
+        }
+
+        #endregion
+
         #region POST
 
         public async Task<ServiceResult<EmployeeLeaveResponseDTO>> CreateLeaveRequestAsync(EmployeeLeaveRequestDTO model)

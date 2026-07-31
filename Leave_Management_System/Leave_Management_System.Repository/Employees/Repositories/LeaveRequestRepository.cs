@@ -71,5 +71,14 @@ namespace Leave_Management_System.Repository.Employees.Repositories
         //    await _applicationDbContextEFCore.SaveChangesAsync();
         //}
 
+        public async Task<IEnumerable<LeaveRequest>> GetRejectableLeaveRequests()
+        {
+            return await _applicationDbContextEFCore.LeaveRequests.Where(l => l.LeaveStatus == LeaveStatus.PENDING && l.EndDate < DateTime.Now).ToListAsync();
+        }
+
+        public async Task<IEnumerable<LeaveRequest>> GetLeaveRequests()
+        {
+            return await _applicationDbContextEFCore.LeaveRequests.Include(lr => lr.Employee).Include(lr => lr.LeaveType).Include(lr => lr.Reviewer).ToListAsync();
+        }
     }
 }

@@ -1,9 +1,11 @@
+using Hangfire;
 using Leave_Management_System.API.ExceptionHandler;
 using Leave_Management_System.Data.DbContexts;
 using Leave_Management_System.Repository.Employees.IRepositories;
 using Leave_Management_System.Repository.Employees.Repositories;
 using Leave_Management_System.Service.Employees.IService;
 using Leave_Management_System.Service.Employees.Service;
+using Leave_Management_System.Service.Hangfire;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -49,6 +51,18 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         }
 );
 
+// Hangfire integration
+builder.Services.AddHangfire((sp, config) =>
+{
+    var connectionString = builder.Configuration.GetConnectionString("Hangfire_DB");
+    config.UseSqlServerStorage(connectionString);
+
+});
+
+builder.Services.AddHangfireServer();
+
+
+
 builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 builder.Services.AddScoped<ILeaveRequestRepository, LeaveRequestRepository>();
 builder.Services.AddScoped<IEmployeeService, EmployeeService>();
@@ -70,5 +84,19 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+using (var scope = app.Services.CreateScope())
+{
+    var recurringJobManager = scope.ServiceProvider
+        .GetRequiredService<IRecurringJobManager>();
+
+    recurringJobManager.AddOrUpdate<HangfireServices>(
+    "leave-request-status-update",
+    service => service.UpdateLeaveRequestStatus(),
+    Cron.Daily()
+);
+}
+
+app.UseHangfireDashboard();
 
 app.Run();
