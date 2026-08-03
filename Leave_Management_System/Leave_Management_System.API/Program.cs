@@ -30,6 +30,19 @@ var logger = new LoggerConfiguration()
 builder.Logging.ClearProviders();
 builder.Logging.AddSerilog(logger);
 
+// cors
+var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: MyAllowSpecificOrigins,
+                      policy =>
+                      {
+                          policy.WithOrigins("http://localhost:5173")
+                            .AllowAnyHeader()
+                                .AllowAnyMethod();
+                      });
+});
+
 // --- DBConetexts ---
 builder.Services.AddDbContext<ApplicationDbContextEFCore>(
     options => options.UseSqlServer(
@@ -76,6 +89,8 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
     app.MapScalarApiReference();
 }
+
+app.UseCors(MyAllowSpecificOrigins);
 
 app.UseMiddleware<ExceptionMiddleware>();
 

@@ -178,7 +178,7 @@ namespace Leave_Management_System.Service.Employees.Service
                 {
                     Success = false,
                     Statuscode = 404,
-                    ErrorMessage = "Employee not found",
+                    ErrorMessage = "Email or password is wrong",
                     Data = null
                 };
             }
@@ -189,7 +189,20 @@ namespace Leave_Management_System.Service.Employees.Service
                 {
                     Success = false,
                     Statuscode = 404,
-                    ErrorMessage = "Employee not found",
+                    ErrorMessage = "Email or password is wrong",
+                    Data = null
+                };
+            }
+
+            var isCorrect = new PasswordHasher<Employee>().VerifyHashedPassword(employee, employee.PasswordHash, model.Password);
+
+            if (isCorrect == PasswordVerificationResult.Failed)
+            {
+                return new ServiceResult<LoginResponseDTO>
+                {
+                    Success = false,
+                    Statuscode = 400,
+                    ErrorMessage = "Email or password is wrong",
                     Data = null
                 };
             }
